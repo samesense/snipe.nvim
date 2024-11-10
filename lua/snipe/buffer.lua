@@ -48,19 +48,25 @@ function M.get_buffers(cmd)
 
 	-- Add run.sh buffer if not present
 	if not run_sh_exists then
-		local run_sh = setmetatable({}, Buffer)
-		run_sh.id = #buffers + 1
-		run_sh.name = "run.sh"
-		run_sh.classifiers = "     "
-		table.insert(buffers, run_sh)
+		if vim.fn.filereadable("run.sh") == 1 then
+			local run_sh = setmetatable({}, Buffer)
+			run_sh.id = vim.fn.bufadd("run.sh")
+			vim.fn.bufload(run_sh.id)
+			run_sh.name = "run.sh"
+			run_sh.classifiers = "     "
+			table.insert(buffers, run_sh)
+		end
 	end
 	-- Add Snakefile.py buffer if not present
 	if not snakefile_exists then
-		local snakefile = setmetatable({}, Buffer)
-		snakefile.id = #buffers + 1
-		snakefile.name = "Snakefile.py"
-		snakefile.classifiers = "     "
-		table.insert(buffers, snakefile)
+		if vim.fn.filereadable("Snakefile.py") == 1 then
+			local snakefile = setmetatable({}, Buffer)
+			snakefile.id = vim.fn.bufadd("Snakefile.py")
+			vim.fn.bufload(snakefile.id)
+			snakefile.name = "Snakefile.py"
+			snakefile.classifiers = "     "
+			table.insert(buffers, snakefile)
+		end
 	end
 
 	return buffers
